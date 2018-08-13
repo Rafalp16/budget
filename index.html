@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <div class="budget-wrapper">
+        <div class="info-wrapper">
             <span>Budget</span>
             <span>3000</span>
             <div>
@@ -23,24 +23,26 @@
                 <span>- 1000</span>
             </div>
         </div>
-        <form class="budget-form">
-            <select>
+        <div class="add-wrapper">
+            <select id="add-type">
                 <option value="+">+</option>
                 <option value="-">-</option>
             </select>
-            <input placeholder="Add description">
-            <input placeholder="Value">
-            <button>Ok</button>
-        </form>
-        <div>
-            <span>Income</span>
-            <ul>
-            </ul>
+            <input id="add-desc" placeholder="Add description">
+            <input id="add-value" placeholder="Value">
+            <button id="add-item">Ok</button>
         </div>
-        <div>
-            <span>Expenses</span>
-            <ul>
-            </ul>
+        <div class="list-wrapper">
+            <div>
+                <span>Income</span>
+                <ul>
+                </ul>
+            </div>
+            <div>
+                <span>Expenses</span>
+                <ul>
+                </ul>
+            </div>
         </div>
         <script src="app.js"></script>
     </body>

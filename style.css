@@ -10,14 +10,20 @@ body {
     line-height: 1.5;
 }
 
-.budget-wrapper {
+.info-wrapper {
     display: flex;
     flex-direction: column;
     text-align: center;
 }
 
-.budget-form {
+.add-wrapper {
     display: flex;
     justify-content: center;
 }
 
+.list-wrapper {
+    display: flex;
+    justify-content: space-around;
+    width: 50%;
+    margin: 0 auto;
+}
