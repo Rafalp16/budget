@@ -35,10 +35,11 @@ const budgetController = (function() {
             else if(type=== 'exp') 
                 newItem = new Expense(id, desc, val);
             data.items[type].push(newItem);
+            data.totals[type] += 1;
             return newItem;
         },
         testing: function() {
-            return data.items;
+            return data;
         }
     }
 })();
@@ -51,6 +52,23 @@ const UIController = (function() {
                 desc: document.getElementById('add-desc').value,
                 value: document.getElementById('add-value').value
             };
+        },
+        addListItem: function(obj) {
+            let template;
+            
+            if(obj.type === 'inc') {
+                template = '<li><span>%desc%</span><span>%value%</span></li>';
+            } else if(obj.type === 'exp') {
+                template = '<li><span>%desc%</span><span>%value%</span></li>';
+            }
+            template = template.replace('%desc%', obj.desc);
+            template = template.replace('%value%', obj.value);
+            
+            if(obj.type === 'inc') {
+                document.getElementById('income').insertAdjacentHTML('beforeEnd', template);
+            } else if(obj.type === 'exp') {
+                document.getElementById('expenses').insertAdjacentHTML('beforeEnd', template);
+            }
         }
     };
 })();
@@ -67,6 +85,7 @@ const controller = (function(budgetCtrl, UICtrl) {
     const addItem = function() {
         const input = UICtrl.getInput();
         budgetCtrl.addItem(input.type, input.desc, input.value);
+        UICtrl.addListItem(input);
     }
     
     return {
