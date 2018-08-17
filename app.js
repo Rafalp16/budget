@@ -35,7 +35,12 @@ const budgetController = (() => {
             data.totals[type] += 1;
             return newItem;
         },
-        test: () => data
+        calculateBudget: () => {
+            const calc = obj => obj.reduce((total, current) => total + current.value, 0);
+            data.totals.inc = calc(data.items.inc);
+            data.totals.exp = calc(data.items.exp);
+        },
+        getBudget: () => data.totals
     }
 })();
 
@@ -45,9 +50,12 @@ const UIController = (() => {
         desc: document.getElementById('add-desc'),
         value: document.getElementById('add-value'),
         income: document.getElementById('income'),
-        expenses: document.getElementById('expenses')
+        expenses: document.getElementById('expenses'),
+        totalBudget: document.querySelector('.budget__value'),
+        totalIncome: document.querySelector('.total-income__value'),
+        totalExpenses: document.querySelector('.total-expenses__value')
     }
-    return {
+    return { 
         getInput: () => {
             return {
                 type: elementsDOM.type.value,
@@ -77,33 +85,29 @@ const UIController = (() => {
             elementsDOM.desc.value = '';
             elementsDOM.value.value = '';
             elementsDOM.desc.focus();
+        },
+        updateBudget: obj => {
+            elementsDOM.totalBudget.textContent = obj.inc - obj.exp;
+            elementsDOM.totalIncome.textContent = obj.inc;
+            elementsDOM.totalExpenses.textContent = obj.exp;
         }
     };
 })();
 
 const controller = ((budgetCtrl, UICtrl) => {
-    /*const setupEventListeners = function() {
-        document.getElementById('add-item').addEventListener('click', addItem);
-
-        document.addEventListener('keypress', function(e) {
-            if(e.keyCode === 13 || e.which === 13) addItem();
-        });
-    }*/
     const addItem = () => {
         const input = UICtrl.getInput();
         if(input.desc !== '' && !isNaN(input.value) && input.value > 0) {
             budgetCtrl.addItem(input.type, input.desc, input.value);
             UICtrl.addListItem(input);
             UICtrl.clearFields();
+            budgetCtrl.calculateBudget();
+            UICtrl.updateBudget(budgetCtrl.getBudget());
+            
         } else alert('Fill description and add a number value!');
     }
     return {
-        /*init: function() {
-            setupEventListeners();
-        },*/
         add: () => { addItem(); }
     }
     
 })(budgetController, UIController);
-
-//controller.init();

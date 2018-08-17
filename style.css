@@ -8,20 +8,21 @@ html {
 
 body {
     line-height: 1.5;
+    font-size: 2em;
 }
 
-.budget-wrapper {
+.budget {
     display: flex;
     flex-direction: column;
     text-align: center;
 }
 
-.add-wrapper {
+.form {
     display: flex;
     justify-content: center;
 }
 
-.list-wrapper {
+.list {
     display: flex;
     justify-content: space-around;
     width: 50%;
