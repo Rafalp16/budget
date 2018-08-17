@@ -11,19 +11,19 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <div class="info-wrapper">
-            <span>Budget</span>
-            <span>3000</span>
+        <div class="budget-wrapper">
+            <span>Available budget</span>
+            <span>+ 0</span>
             <div>
                 <span>income</span>
-                <span>+ 4000</span>
+                <span>+ 0</span>
             </div>
             <div>
                 <span>expenses</span>
-                <span>- 1000</span>
+                <span>- 0</span>
             </div>
         </div>
-        <div class="add-wrapper">
+        <form class="add-wrapper" action="javascript:controller.add();">
             <select id="add-type">
                 <option value="inc">+</option>
                 <option value="exp">-</option>
@@ -31,7 +31,7 @@
             <input id="add-desc" placeholder="Add description">
             <input id="add-value" placeholder="Value">
             <button id="add-item">Ok</button>
-        </div>
+        </form>
         <div class="list-wrapper">
             <div>
                 <span>Income</span>

@@ -1,16 +1,14 @@
-const budgetController = (function() {
+const budgetController = (() => {
     const Income = function(id, desc, value) {
         this.id = id;
         this.desc = desc;
         this.value = value;
     };
-    
     const Expense = function(id, desc, value) {
         this.id = id;
         this.desc = desc;
         this.value = value;
     };
-    
     const data = {
         items: {
             exp: [],
@@ -21,9 +19,8 @@ const budgetController = (function() {
             inc: 0
         }
     };
-    
     return {
-        addItem: function(type, desc, val) {
+        addItem: (type, desc, val) => {
             let newItem, id;
             
             if(data.items[type].length > 0)
@@ -38,22 +35,27 @@ const budgetController = (function() {
             data.totals[type] += 1;
             return newItem;
         },
-        testing: function() {
-            return data;
-        }
+        test: () => data
     }
 })();
 
-const UIController = (function() {
+const UIController = (() => {
+    const elementsDOM = {
+        type: document.getElementById('add-type'),
+        desc: document.getElementById('add-desc'),
+        value: document.getElementById('add-value'),
+        income: document.getElementById('income'),
+        expenses: document.getElementById('expenses')
+    }
     return {
-        getInput: function() {
+        getInput: () => {
             return {
-                type: document.getElementById('add-type').value,
-                desc: document.getElementById('add-desc').value,
-                value: document.getElementById('add-value').value
+                type: elementsDOM.type.value,
+                desc: elementsDOM.desc.value,
+                value: parseFloat(elementsDOM.value.value)
             };
         },
-        addListItem: function(obj) {
+        addListItem: obj => {
             let template;
             
             if(obj.type === 'inc') {
@@ -65,35 +67,43 @@ const UIController = (function() {
             template = template.replace('%value%', obj.value);
             
             if(obj.type === 'inc') {
-                document.getElementById('income').insertAdjacentHTML('beforeEnd', template);
+                elementsDOM.income.insertAdjacentHTML('beforeEnd', template);
             } else if(obj.type === 'exp') {
-                document.getElementById('expenses').insertAdjacentHTML('beforeEnd', template);
+                elementsDOM.expenses.insertAdjacentHTML('beforeEnd', template);
             }
+        },
+        clearFields: () => {
+            elementsDOM.type.value = 'inc';
+            elementsDOM.desc.value = '';
+            elementsDOM.value.value = '';
+            elementsDOM.desc.focus();
         }
     };
 })();
 
-const controller = (function(budgetCtrl, UICtrl) {
-    const setupEventListeners = function() {
+const controller = ((budgetCtrl, UICtrl) => {
+    /*const setupEventListeners = function() {
         document.getElementById('add-item').addEventListener('click', addItem);
 
         document.addEventListener('keypress', function(e) {
             if(e.keyCode === 13 || e.which === 13) addItem();
         });
-    }
-    
-    const addItem = function() {
+    }*/
+    const addItem = () => {
         const input = UICtrl.getInput();
-        budgetCtrl.addItem(input.type, input.desc, input.value);
-        UICtrl.addListItem(input);
+        if(input.desc !== '' && !isNaN(input.value) && input.value > 0) {
+            budgetCtrl.addItem(input.type, input.desc, input.value);
+            UICtrl.addListItem(input);
+            UICtrl.clearFields();
+        } else alert('Fill description and add a number value!');
     }
-    
     return {
-        init: function() {
+        /*init: function() {
             setupEventListeners();
-        }
+        },*/
+        add: () => { addItem(); }
     }
     
 })(budgetController, UIController);
 
-controller.init();
+//controller.init();
