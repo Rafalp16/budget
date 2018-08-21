@@ -32,13 +32,17 @@ const budgetController = (() => {
             else if(type=== 'exp') 
                 newItem = new Expense(id, desc, val);
             data.items[type].push(newItem);
-            data.totals[type] += 1;
             return newItem;
         },
         calculateBudget: () => {
             const calc = obj => obj.reduce((total, current) => total + current.value, 0);
             data.totals.inc = calc(data.items.inc);
             data.totals.exp = calc(data.items.exp);
+        },
+        removeItem: (type, id) => {
+            console.log(type, id);
+            data.items[type].pop();
+            console.log(data.items[type]);
         },
         getBudget: () => data.totals
     }
@@ -63,20 +67,20 @@ const UIController = (() => {
                 value: parseFloat(elementsDOM.value.value)
             };
         },
-        addListItem: obj => {
+        addListItem: (obj, type) => {
             let template;
-            
-            if(obj.type === 'inc') {
-                template = '<li><span>%desc%</span><span>%value%</span></li>';
-            } else if(obj.type === 'exp') {
-                template = '<li><span>%desc%</span><span>%value%</span></li>';
+            if(type === 'inc') {
+                template = '<li id="inc-%id%"><span>%desc%</span><span>%value%</span><button id="delete-item">Delete</button></li>';
+            } else if(type === 'exp') {
+                template = '<li id="exp-%id%"><span>%desc%</span><span>%value%</span><button id="delete-item">Delete</button></li>';
             }
             template = template.replace('%desc%', obj.desc);
             template = template.replace('%value%', obj.value);
+            template = template.replace('%id%', obj.id);
             
-            if(obj.type === 'inc') {
+            if(type === 'inc') {
                 elementsDOM.income.insertAdjacentHTML('beforeEnd', template);
-            } else if(obj.type === 'exp') {
+            } else if(type === 'exp') {
                 elementsDOM.expenses.insertAdjacentHTML('beforeEnd', template);
             }
         },
@@ -87,27 +91,44 @@ const UIController = (() => {
             elementsDOM.desc.focus();
         },
         updateBudget: obj => {
-            elementsDOM.totalBudget.textContent = obj.inc - obj.exp;
-            elementsDOM.totalIncome.textContent = obj.inc;
-            elementsDOM.totalExpenses.textContent = obj.exp;
+            elementsDOM.totalBudget.textContent = obj.inc 
+                obj.inc - obj.exp;
+            elementsDOM.totalIncome.textContent = '+' + obj.inc;
+            elementsDOM.totalExpenses.textContent = '-' + obj.exp;
         }
     };
 })();
 
 const controller = ((budgetCtrl, UICtrl) => {
+    function init() {
+        document.querySelector('.list').addEventListener('click', deleteItem);
+    }
     const addItem = () => {
         const input = UICtrl.getInput();
         if(input.desc !== '' && !isNaN(input.value) && input.value > 0) {
-            budgetCtrl.addItem(input.type, input.desc, input.value);
-            UICtrl.addListItem(input);
+            const item = budgetCtrl.addItem(input.type, input.desc, input.value);
+            UICtrl.addListItem(item, input.type);
             UICtrl.clearFields();
             budgetCtrl.calculateBudget();
             UICtrl.updateBudget(budgetCtrl.getBudget());
             
         } else alert('Fill description and add a number value!');
     }
+    const deleteItem = (event) => {
+        const item = event.target.parentNode.id;
+        if(item) {
+            const type = item.slice(0, 3);
+            const id = item.slice(4, 5);
+            budgetCtrl.removeItem(type, id);
+        }
+        
+        
+    }
     return {
-        add: () => { addItem(); }
+        add: () => { addItem(); },
+        init: () => { init(); }
     }
     
 })(budgetController, UIController);
+
+controller.init();

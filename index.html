@@ -9,28 +9,29 @@
         <title>Budget</title>
         <link rel="stylesheet" href="normalize.css">
         <link rel="stylesheet" href="style.css">
+        <link href="https://fonts.googleapis.com/css?family=Merienda" rel="stylesheet"> 
     </head>
     <body>
         <div class="budget">
             <header class="budget__header">Available budget</header>
             <span class="budget__value">0</span>
             <div class="total-income-wrapper">
-                <span class="total-income__header">income</span>
-                <span class="total-income__value">0</span>
+                <span class="total-income__header">INCOMES</span>
+                <span class="total-income__value">+0</span>
             </div>
             <div class="total-expenses-wrapper">
-                <span class="total-expenses__header">expenses</span>
-                <span class="total-expenses__value">0</span>
+                <span class="total-expenses__header">EXPENSES</span>
+                <span class="total-expenses__value">-0</span>
             </div>
         </div>
         <form class="form" action="javascript:controller.add();">
-            <select id="add-type">
-                <option value="inc">+</option>
-                <option value="exp">-</option>
-            </select>
-            <input id="add-desc" placeholder="Add description">
-            <input id="add-value" placeholder="Value">
-            <button id="add-item">Ok</button>
+            <div class="form__select">
+                <input type="radio" name="type" value="inc" checked>+<br>
+                <input type="radio" name="type" value="exp">-<br>
+            </div>
+            <input id="add-desc" placeholder="add description" class="form__input">
+            <input id="add-value" placeholder="value" class="form__input">
+            <button id="add-item" class="form__button">accept</button>
         </form>
         <div class="list">
             <div>
