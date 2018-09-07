@@ -39,12 +39,16 @@ const budgetController = (() => {
             data.totals.inc = calc(data.items.inc);
             data.totals.exp = calc(data.items.exp);
         },
-        removeItem: (type, id) => {
-            console.log(type, id);
-            data.items[type].pop();
-            console.log(data.items[type]);
+        removeItem: (item) => {
+            const type = item.slice(0, 3);
+            const id = item.slice(4, 5);
+            const index = data.items[type].reduce(function(total, current, i) {
+            return current.id == id ? total + i : total + 0;
+            }, 0);
+            data.items[type].splice(index, 1);
         },
-        getBudget: () => data.totals
+        getBudget: () => data.totals,
+        getInc: () => data.items.inc
     }
 })();
 
@@ -70,9 +74,9 @@ const UIController = (() => {
         addListItem: (obj, type) => {
             let template;
             if(type === 'inc') {
-                template = '<li id="inc-%id%"><span>%desc%</span><span>%value%</span><button id="delete-item">Delete</button></li>';
+                template = '<li id="inc-%id%" class="list-item"><span class="item-desc">%desc%</span><span class="item-value">%value%</span><button id="delete-item" class="item-button">Delete</button></li>';
             } else if(type === 'exp') {
-                template = '<li id="exp-%id%"><span>%desc%</span><span>%value%</span><button id="delete-item">Delete</button></li>';
+                template = '<li id="exp-%id%" class="list-item"><span class="item-desc">%desc%</span><span class="item-value">%value%</span><button id="delete-item" class="item-button">Delete</button></li>';
             }
             template = template.replace('%desc%', obj.desc);
             template = template.replace('%value%', obj.value);
@@ -84,15 +88,16 @@ const UIController = (() => {
                 elementsDOM.expenses.insertAdjacentHTML('beforeEnd', template);
             }
         },
+        removeListItem: (item) => {
+            document.getElementById(item).remove();
+        },
         clearFields: () => {
-            elementsDOM.type.value = 'inc';
             elementsDOM.desc.value = '';
             elementsDOM.value.value = '';
             elementsDOM.desc.focus();
         },
         updateBudget: obj => {
-            elementsDOM.totalBudget.textContent = obj.inc 
-                obj.inc - obj.exp;
+            elementsDOM.totalBudget.textContent = obj.inc - obj.exp;
             elementsDOM.totalIncome.textContent = '+' + obj.inc;
             elementsDOM.totalExpenses.textContent = '-' + obj.exp;
         }
@@ -117,12 +122,11 @@ const controller = ((budgetCtrl, UICtrl) => {
     const deleteItem = (event) => {
         const item = event.target.parentNode.id;
         if(item) {
-            const type = item.slice(0, 3);
-            const id = item.slice(4, 5);
-            budgetCtrl.removeItem(type, id);
+            budgetCtrl.removeItem(item);
+            UICtrl.removeListItem(item);
+            budgetCtrl.calculateBudget();
+            UICtrl.updateBudget(budgetCtrl.getBudget());
         }
-        
-        
     }
     return {
         add: () => { addItem(); },

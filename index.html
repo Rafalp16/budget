@@ -9,12 +9,12 @@
         <title>Budget</title>
         <link rel="stylesheet" href="normalize.css">
         <link rel="stylesheet" href="style.css">
-        <link href="https://fonts.googleapis.com/css?family=Merienda" rel="stylesheet"> 
+        <link href="https://fonts.googleapis.com/css?family=Mina" rel="stylesheet">  
     </head>
     <body>
         <div class="budget">
-            <header class="budget__header">Available budget</header>
-            <span class="budget__value">0</span>
+            <header class="budget__header">Available budget <span class="budget__value">0</span>
+            </header>
             <div class="total-income-wrapper">
                 <span class="total-income__header">INCOMES</span>
                 <span class="total-income__value">+0</span>
@@ -25,27 +25,24 @@
             </div>
         </div>
         <form class="form" action="javascript:controller.add();">
-            <div class="form__select">
-                <input type="radio" name="type" value="inc" checked>+<br>
-                <input type="radio" name="type" value="exp">-<br>
-            </div>
-            <input id="add-desc" placeholder="add description" class="form__input">
-            <input id="add-value" placeholder="value" class="form__input">
-            <button id="add-item" class="form__button">accept</button>
+            <select id="add-type" class="form__select">
+                <option value="inc">Income</option>
+                <option value="exp">Expense</option>
+            </select>
+            <input id="add-desc" placeholder="Description" class="form__input">
+            <input id="add-value" placeholder="Value" class="form__input">
+            <button id="add-item" class="form__button">Add</button>
         </form>
+        <div class="list-title">
+            <span>Income</span>
+            <span>Expenses</span>
+        </div>
         <div class="list">
-            <div>
-                <span>Income</span>
-                <ul id="income">
-                    <!--<li><span>elo</span><span>400</span></li>-->
-                </ul>
-            </div>
-            <div>
-                <span>Expenses</span>
-                <ul id="expenses">
-                    <!--<li><span>bye</span><span>5000</span></li>-->
-                </ul>
-            </div>
+            <ul id="income" class="income-list">
+                <!--<li id="inc-%id%" class="list-item"><span class="item-desc">%desc%</span><span class="item-value">%value%</span><button id="delete-item" class="item-button">Delete</button></li>-->
+            </ul>
+            <ul id="expenses" class="expenses-list">
+            </ul>
         </div>
         <script src="app.js"></script>
     </body>

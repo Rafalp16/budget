@@ -8,21 +8,31 @@ html {
 
 body {
     line-height: 1.22;
+    color: #fff;
     font-size: 2em;
     background-color:black;
-    background-color: #fff; 
-        background-image: 
-        linear-gradient(90deg, transparent 79px, #abced4 79px, #abced4 81px, transparent 81px),
-        linear-gradient(#eee .1em, transparent .1em);
-        background-size: 100% 1.2em;
-    font-family: 'Merienda', cursive;
+    background-color:black;
+    background-image:
+        radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+        radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
+        radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
+    background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px; 
+    background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
+    font-family: 'Mina', sans-serif;
+}
+
+@media (max-width: 37.5em) {
+    body {
+        font-size: 1.4em;
+    }
 }
 
 .budget {
     display: flex;
     flex-direction: column;
     text-align: center;
-    min-height: 5.8em;
+    padding: 0.5em 0;
 }
 
 .total-income-wrapper {
@@ -36,17 +46,132 @@ body {
 .form {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    padding-bottom: 0.5em;
+    font-size: 0.75em;
+    max-width: 17.5em;
+    margin: 0 auto;
 }
 
-.form__select, .form__input, .form__button {
-    background: none;
+.form__select {
+    padding-left: 0.35em;
+    margin: 0.15em auto;
+    background-color: rgba(0, 196, 196, 0.55);
+    color: #fff;
+    font-weight: 700;
+    border: 1px solid #009999;
+    width: 100%;
+    height: 1.85em;
+}
+
+.form__input {
+    padding: 0.35em;
+    margin: 0.15em auto;
+    background-color: rgba(0, 196, 196, 0.55);
+    color: #fff;
+    border: 1px solid #009999;
+    width: 100%;
+}
+
+.form__select:hover, .form__select:focus,
+.form__input:hover, .form__input:focus {
+    border-left: 5px solid rgb(0, 196, 196);
+}
+
+.form__input::placeholder {
+    color: white;
+    opacity: 0.7;
+}
+
+.form__button {
+    padding: 0.35em;
+    width: 50%;
+    margin: 0.15em auto;
+    background-color: rgba(0, 196, 196, 0.75);
+    color: #fff;
+    font-weight: 700;
+    border: 1px solid #009999;
+    width: 100%;
+}
+
+.form__button:hover, .form__button:focus {
+    cursor: pointer;
+    background-color: rgba(0, 196, 196, 1);
 }
 
 .list {
     display: flex;
+    max-width: 35em;
+    margin: 0 auto;
+    justify-content: space-between;
+    padding: 0 1em;
+}
+
+@media (max-width: 53.75em) {
+    .list {
+        flex-direction: column;
+        align-items: center;
+        max-width: 100%;
+    }
+}
+    
+.list-title {
+    width: 100%;
+    max-width: 30em;
+    display: flex;
     justify-content: space-around;
-    width: 50%;
     margin: 0 auto;
 }
+
+@media (max-width: 53.75em) {
+    .list-title {
+        display: none;
+    }
+}
+
+.income-list, .expenses-list {
+    list-style: none;
+    padding-left: 0;
+    width: 48%;
+}
+
+@media (max-width: 53.75em) {
+    .income-list, .expenses-list {
+        width: 100%;
+    }
+}
+
+.income-list {
+    color: #0f0;
+}
+
+.expenses-list {
+    color: #f00;
+}
+
+.list-item {
+    display: flex;
+    margin-bottom: 0.25em;
+    border-bottom: 1px solid #666;
+}
+
+.item-desc {
+    width: 45%;
+}
+
+.item-value {
+    width: 37%;
+}
+
+.item-button {
+    width: 18%;
+    font-size: 0.6em;
+    background-color: rgba(0, 196, 196, 0.75);
+    color: #fff;
+    border: 1px solid #009999;
+}
+
+.item-button:hover, .item-button:focus {
+    cursor: pointer;
+    background-color: rgba(0, 196, 196, 1);
+}
+
